@@ -1,0 +1,112 @@
+from domain.EspacioDeEstados import EspacioDeEstados
+from domain.EspacioDeEstados import Estado
+from domain.EspacioDeEstados import Accion
+
+
+def test_setAction():
+    espacio = EspacioDeEstados(Estado('S',11),Estado('G',0))
+    espacio.setEstado('A',10.4)
+    espacio.setEstado('B', 6.7)
+    espacio.setEstado('C', 4)
+    espacio.setEstado('D', 8.9)
+    espacio.setEstado('E', 6.9)
+    espacio.setEstado('F', 3)
+    espacio.setAccion(Estado('S',11),Estado('A',10.4),3)
+    espacio.setAccion(Estado('A', 10.4),Estado('S', 11),  3)
+    espacio.setAccion(Estado('D', 8.9), Estado('S', 11), 5)
+    espacio.setAccion(Estado('S', 11), Estado('D', 8.9), 5)
+    assert Estado('S',11) in espacio.actionResults(Estado('A',10.4))
+    assert Estado('A', 10.4) in espacio.actionResults(Estado('S', 11))
+    assert Estado('S', 11) in espacio.actionResults(Estado('D', 8.9))
+    assert Estado('D', 8.9) in espacio.actionResults(Estado('S', 11))
+    assert not Estado('B', 6.7) in espacio.actionResults(Estado('S', 11))
+
+def test_actionCost():
+    espacio = EspacioDeEstados(Estado('S', 11), Estado('G', 0))
+    espacio.setEstado('A', 10.4)
+    espacio.setEstado('B', 6.7)
+    espacio.setEstado('C', 4)
+    espacio.setEstado('D', 8.9)
+    espacio.setEstado('E', 6.9)
+    espacio.setEstado('F', 3)
+    espacio.setAccion(Estado('S', 11), Estado('A', 10.4), 3)
+    espacio.setAccion(Estado('A', 10.4), Estado('S', 11), 3)
+    espacio.setAccion(Estado('D', 8.9), Estado('S', 11), 4)
+    espacio.setAccion(Estado('S', 11), Estado('D', 8.9), 4)
+    espacio.setAccion(Estado('A', 10.4), Estado('B', 6.7), 4)
+    espacio.setAccion(Estado('B', 6.7), Estado('A', 10.4), 4)
+    espacio.setAccion(Estado('A', 10.4), Estado('D', 8.9), 5)
+    espacio.setAccion(Estado('D', 8.9), Estado('A', 10.4), 5)
+    espacio.setAccion(Estado('D', 8.9), Estado('E', 6.9), 2)
+    espacio.setAccion(Estado('E', 6.9), Estado('D', 8.9), 2)
+    espacio.setAccion(Estado('E', 6.9), Estado('B', 6.7), 5)
+    espacio.setAccion(Estado('B', 6.7), Estado('E', 6.9), 5)
+    espacio.setAccion(Estado('B', 6.7), Estado('C', 4), 4)
+    espacio.setAccion(Estado('C', 4), Estado('B', 6.7), 4)
+    espacio.setAccion(Estado('E', 6.9), Estado('F', 3), 4)
+    espacio.setAccion(Estado('F', 3), Estado('E', 6.9), 4)
+    espacio.setAccion(Estado('G', 0), Estado('F', 3), 3)
+    espacio.setAccion(Estado('F', 3), Estado('G', 0), 3)
+    assert espacio.actionCost(Estado('A',10.4), Estado('A',10.4)) == 0
+    assert espacio.actionCost(Estado('A', 10.4), Estado('E', 6.9)) == 7
+    assert espacio.actionCost(Estado('S', 11), Estado('G', 0)) == 13
+
+def test_heuristicCost():
+    espacio = EspacioDeEstados(Estado('S', 11), Estado('G', 0))
+    espacio.setEstado('A', 10.4)
+    espacio.setEstado('B', 6.7)
+    espacio.setEstado('C', 4)
+    espacio.setEstado('D', 8.9)
+    espacio.setEstado('E', 6.9)
+    espacio.setEstado('F', 3)
+    espacio.setAccion(Estado('S', 11), Estado('A', 10.4), 3)
+    espacio.setAccion(Estado('A', 10.4), Estado('S', 11), 3)
+    espacio.setAccion(Estado('D', 8.9), Estado('S', 11), 4)
+    espacio.setAccion(Estado('S', 11), Estado('D', 8.9), 4)
+    espacio.setAccion(Estado('A', 10.4), Estado('B', 6.7), 4)
+    espacio.setAccion(Estado('B', 6.7), Estado('A', 10.4), 4)
+    espacio.setAccion(Estado('A', 10.4), Estado('D', 8.9), 5)
+    espacio.setAccion(Estado('D', 8.9), Estado('A', 10.4), 5)
+    espacio.setAccion(Estado('D', 8.9), Estado('E', 6.9), 2)
+    espacio.setAccion(Estado('E', 6.9), Estado('D', 8.9), 2)
+    espacio.setAccion(Estado('E', 6.9), Estado('B', 6.7), 5)
+    espacio.setAccion(Estado('B', 6.7), Estado('E', 6.9), 5)
+    espacio.setAccion(Estado('B', 6.7), Estado('C', 4), 4)
+    espacio.setAccion(Estado('C', 4), Estado('B', 6.7), 4)
+    espacio.setAccion(Estado('E', 6.9), Estado('F', 3), 4)
+    espacio.setAccion(Estado('F', 3), Estado('E', 6.9), 4)
+    espacio.setAccion(Estado('G', 0), Estado('F', 3), 3)
+    espacio.setAccion(Estado('F', 3), Estado('G', 0), 3)
+    assert not espacio.heuristicCost('T') != 0
+    assert espacio.heuristicCost('D') == 8.9
+
+def test_a():
+    espacio = EspacioDeEstados(Estado('S', 11), Estado('G', 0))
+    espacio.setEstado('A', 10.4)
+    espacio.setEstado('B', 6.7)
+    espacio.setEstado('C', 4)
+    espacio.setEstado('D', 8.9)
+    espacio.setEstado('E', 6.9)
+    espacio.setEstado('F', 3)
+    espacio.setAccion(Estado('S', 11), Estado('A', 10.4), 3)
+    espacio.setAccion(Estado('A', 10.4), Estado('S', 11), 3)
+    espacio.setAccion(Estado('D', 8.9), Estado('S', 11), 4)
+    espacio.setAccion(Estado('S', 11), Estado('D', 8.9), 4)
+    espacio.setAccion(Estado('A', 10.4), Estado('B', 6.7), 4)
+    espacio.setAccion(Estado('B', 6.7), Estado('A', 10.4), 4)
+    espacio.setAccion(Estado('A', 10.4), Estado('D', 8.9), 5)
+    espacio.setAccion(Estado('D', 8.9), Estado('A', 10.4), 5)
+    espacio.setAccion(Estado('D', 8.9), Estado('E', 6.9), 2)
+    espacio.setAccion(Estado('E', 6.9), Estado('D', 8.9), 2)
+    espacio.setAccion(Estado('E', 6.9), Estado('B', 6.7), 5)
+    espacio.setAccion(Estado('B', 6.7), Estado('E', 6.9), 5)
+    espacio.setAccion(Estado('B', 6.7), Estado('C', 4), 4)
+    espacio.setAccion(Estado('C', 4), Estado('B', 6.7), 4)
+    espacio.setAccion(Estado('E', 6.9), Estado('F', 3), 4)
+    espacio.setAccion(Estado('F', 3), Estado('E', 6.9), 4)
+    espacio.setAccion(Estado('G', 0), Estado('F', 3), 3)
+    espacio.setAccion(Estado('F', 3), Estado('G', 0), 3)
+    assert espacio.a(Estado('S',11)) == 13.0
+    assert espacio.a(Estado('G', 0)) == 0
+    assert espacio.a(Estado('F', 3)) == 3.0
+    assert espacio.a(Estado('D', 0)) == 9
