@@ -1,6 +1,0 @@
-setup.py
-src/ProyectosPython.egg-info/PKG-INFO
-src/ProyectosPython.egg-info/SOURCES.txt
-src/ProyectosPython.egg-info/dependency_links.txt
-src/ProyectosPython.egg-info/requires.txt
-src/ProyectosPython.egg-info/top_level.txt
